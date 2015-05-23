@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ServerUploadService {
 
-    private static final String UPLOAD_FOLDER = "/upload/models/";
+    private static final String UPLOAD_FOLDER = "upload/models/";
 
     public Object uploadFile(String id, Request sparkRequest) {
         HttpServletRequest request = sparkRequest.raw();
@@ -36,14 +36,17 @@ public class ServerUploadService {
                 System.out.println("Spremam datoteku: " + fileName + " sa id: " + id);
                 if (fileName != null) {
                     //TODO y u no create dem folders!
-                    File uploadedFile = new File(UPLOAD_FOLDER+fileName);
+                    File uploadedFile = new File(UPLOAD_FOLDER);
+                    File datoteka = new File(UPLOAD_FOLDER+fileName);
                     if (uploadedFile.mkdirs()) {
                         System.out.println("Folderi kreirani");
-                        uploadedFile.createNewFile();
+
+
                     } else {
                         System.out.println("Failed to create directory " + uploadedFile.getParent());
                     }
-                    item.write(uploadedFile);
+                    datoteka.createNewFile();
+                    item.write(datoteka);
 
                     /* MongoDB stuff uncomment if needed
                     GridFS gridfs = new GridFS(db, "recordings");
