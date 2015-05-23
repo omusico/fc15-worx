@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 public class AutodeskApiHelpers {
 
     private String url = null;
+    private String authToken = "";
 
     public AutodeskApiHelpers() {
     }
@@ -66,7 +67,16 @@ public class AutodeskApiHelpers {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        this.authToken = token;
         return token;
+    }
+
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

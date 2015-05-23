@@ -6,7 +6,8 @@ var app = angular.module('worxapp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngRoute'
+    'ngRoute',
+    'file-uploader'
 ]);
 
 //todo add authentication logic
@@ -17,6 +18,9 @@ app.config(function ($routeProvider) {
     }).when('/createBucket', {
         templateUrl: 'views/createBucket.html',
         controller: 'CreateBucketCtrl'
+    }).when('/uploadFile',{
+        templateUrl: 'views/uploadFile.html',
+        controller: 'UploadFileCtrl'
     }).otherwise({
         redirectTo: '/'
     })
@@ -48,4 +52,16 @@ app.controller('CreateBucketCtrl', function ($scope, $http, $location) {
             console.log('Error ' + data)
         })
     }
+});
+
+app.controller('UploadFileCtrl', function ($scope, $http, $routeParams, $location, FileUploader) {
+    $scope.fileId = $routeParams.fileId;
+
+    $scope.uploadFile = function(){
+        $scope.files = document.getElementById('uploadFile').files;
+        FileUploader.post(
+            '/api/v1/uploadFile/'+$scope.fileId,
+            $scope.files
+        ).then(success,error,notify); //todo implement callbacks
+    };
 });

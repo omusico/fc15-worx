@@ -2,6 +2,7 @@ package hr.heisenbug.worxapp;
 
 import com.mongodb.*;
 import hr.heisenbug.worxapp.helpers.AutodeskApiHelpers;
+import hr.heisenbug.worxapp.helpers.StaticData;
 
 import static spark.Spark.setIpAddress;
 import static spark.Spark.setPort;
@@ -28,7 +29,14 @@ public class Bootstrap {
         String token = aah.authenticateApi(key, secret);
         System.out.println("Authentication: " + token);
 
+        //set static data
+        StaticData.setConsumerKey(key);
+        StaticData.setConsumerSecret(secret);
+        StaticData.setAuthorizationToken(token);
+
+
         new BucketResource(new BucketService(mongo()));
+        new ServerUploadResource(new ServerUploadService());
     }
 
     //todo refactor
