@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import spark.Request;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +17,8 @@ import java.util.List;
  */
 public class ServerUploadService {
 
-    private static final String UPLOAD_FOLDER = "upload/models/";
+    private static final String UPLOAD_FOLDER = "target/classes/public/img/generated/";
+    public String filePath = "";
 
     public Object uploadFile(String id, Request sparkRequest) {
         HttpServletRequest request = sparkRequest.raw();
@@ -38,6 +40,9 @@ public class ServerUploadService {
                     //TODO y u no create dem folders!
                     File uploadedFile = new File(UPLOAD_FOLDER);
                     File datoteka = new File(UPLOAD_FOLDER+fileName);
+
+                    filePath = datoteka.getPath();
+
                     if (uploadedFile.mkdirs()) {
                         System.out.println("Folderi kreirani");
 
@@ -66,5 +71,13 @@ public class ServerUploadService {
 
 
         return null;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

@@ -1,7 +1,14 @@
 package hr.heisenbug.worxapp;
 
+import hr.heisenbug.worxapp.helpers.SolidFileParser;
+import org.eclipse.jetty.util.Jetty;
+import org.eclipse.jetty.webapp.JettyWebXmlConfiguration;
+
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import java.io.IOException;
@@ -9,6 +16,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static spark.Spark.post;
 
@@ -27,8 +35,31 @@ public class ServerUploadResource {
     }
 
     private void setupEndpoints() {
-        post(API_CONTEXT + "/uploadFile/:id", "application/json", (request, response) ->
-                serverUploadService.uploadFile(request.params(":id"),request), new JsonTransformer());
+        post(API_CONTEXT + "/uploadFile/:id", "application/json", (request, response) -> {
+
+
+
+            serverUploadService.uploadFile(request.params(":id"), request);
+            //parser
+            SolidFileParser sfp = new SolidFileParser(serverUploadService.getFilePath());
+            List<String> modelDependencies = sfp.parseSolidFile();
+            System.out.println("Model dependencies: " + modelDependencies);
+
+
+            //preview image path
+            String previewImagePath = sfp.getFinalPreviewPath();
+            System.out.println("Imge preview: " + previewImagePath);
+
+            String previewUrl = "http://localhost:8080/img/generated/"+previewImagePath.substring(previewImagePath.lastIndexOf("/") +1);
+            System.out.println(
+                    previewUrl
+            );
+
+            response.redirect(previewUrl);
+            return response;
+
+        }, new JsonTransformer());
+
     }
 
 }

@@ -62,6 +62,13 @@ app.controller('UploadFileCtrl', function ($scope, $http, $routeParams, $locatio
         FileUploader.post(
             '/api/v1/uploadFile/'+$scope.fileId,
             $scope.files
-        ).then(success,error,notify); //todo implement callbacks
+        ).then(function(response, status){
+                console.log("Dobar je upload");
+                alert(data)
+            },function(){
+                console.log("Los je upload !");
+            },function(){
+                console.log("Notify");
+            }); //todo implement callbacks
     };
 });

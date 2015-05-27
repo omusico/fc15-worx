@@ -6,6 +6,7 @@ import hr.heisenbug.worxapp.helpers.StaticData;
 
 import static spark.Spark.setIpAddress;
 import static spark.Spark.setPort;
+import static spark.SparkBase.externalStaticFileLocation;
 import static spark.SparkBase.staticFileLocation;
 
 /**
