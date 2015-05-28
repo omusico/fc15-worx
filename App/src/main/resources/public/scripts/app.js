@@ -18,7 +18,10 @@ app.config(function ($routeProvider) {
     }).when('/createBucket', {
         templateUrl: 'views/createBucket.html',
         controller: 'CreateBucketCtrl'
-    }).when('/uploadFile',{
+    }).when('/projects/:id', {
+        templateUrl: 'views/viewBucket.html',
+        controller: 'ViewBucketCtrl'
+    }).when('/uploadFile', {
         templateUrl: 'views/uploadFile.html',
         controller: 'UploadFileCtrl'
     }).otherwise({
@@ -54,20 +57,29 @@ app.controller('CreateBucketCtrl', function ($scope, $http, $location) {
     }
 });
 
+app.controller('ViewBucketCtrl', function ($scope, $http, $routeParams) {
+    $scope.projectId = $routeParams.id;
+    $http.get('/api/v1/projects/' + $scope.projectId).success(function (data) {
+        $scope.project = data;
+    }).error(function (data, status) {
+        console.log('Error ' + data)
+    })
+});
+
 app.controller('UploadFileCtrl', function ($scope, $http, $routeParams, $location, FileUploader) {
     $scope.fileId = $routeParams.fileId;
 
-    $scope.uploadFile = function(){
+    $scope.uploadFile = function () {
         $scope.files = document.getElementById('uploadFile').files;
         FileUploader.post(
-            '/api/v1/uploadFile/'+$scope.fileId,
+            '/api/v1/uploadFile/' + $scope.fileId,
             $scope.files
-        ).then(function(response, status){
+        ).then(function (response, status) {
                 console.log("Dobar je upload");
                 alert(data)
-            },function(){
+            }, function () {
                 console.log("Los je upload !");
-            },function(){
+            }, function () {
                 console.log("Notify");
             }); //todo implement callbacks
     };

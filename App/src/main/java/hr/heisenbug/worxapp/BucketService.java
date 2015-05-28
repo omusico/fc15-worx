@@ -33,8 +33,8 @@ public class BucketService {
     public void createNewBucket(String body) {
         Bucket bucket= new Gson().fromJson(body, Bucket.class);
         collection.insert(new BasicDBObject("title", bucket.getTitle())
-                            .append("url", bucket.getUrl())
                             .append("owner", bucket.getOwner())
+                            .append("childModels", bucket.getChildModels())
                             .append("createdOn", new Date()));
     }
 
