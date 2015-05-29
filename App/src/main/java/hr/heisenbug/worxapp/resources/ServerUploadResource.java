@@ -1,21 +1,10 @@
-package hr.heisenbug.worxapp;
+package hr.heisenbug.worxapp.resources;
 
+import hr.heisenbug.worxapp.JsonTransformer;
+import hr.heisenbug.worxapp.services.ServerUploadService;
 import hr.heisenbug.worxapp.helpers.SolidFileParser;
-import org.eclipse.jetty.util.Jetty;
-import org.eclipse.jetty.webapp.JettyWebXmlConfiguration;
+import spark.Spark;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static spark.Spark.post;
@@ -35,8 +24,7 @@ public class ServerUploadResource {
     }
 
     private void setupEndpoints() {
-        post(API_CONTEXT + "/uploadFile/:id", "application/json", (request, response) -> {
-
+        Spark.post(API_CONTEXT + "/uploadFile/:id", "application/json", (request, response) -> {
 
 
             serverUploadService.uploadFile(request.params(":id"), request);
@@ -48,9 +36,9 @@ public class ServerUploadResource {
 
             //preview image path
             String previewImagePath = sfp.getFinalPreviewPath();
-            System.out.println("Imge preview: " + previewImagePath);
+            System.out.println("Image preview: " + previewImagePath);
 
-            String previewUrl = "http://localhost:8080/img/generated/"+previewImagePath.substring(previewImagePath.lastIndexOf("/") +1);
+            String previewUrl = "http://localhost:8080/img/generated/" + previewImagePath.substring(previewImagePath.lastIndexOf("/") + 1);
             System.out.println(
                     previewUrl
             );

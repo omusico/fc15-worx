@@ -3,10 +3,13 @@ package hr.heisenbug.worxapp;
 import com.mongodb.*;
 import hr.heisenbug.worxapp.helpers.AutodeskApiHelpers;
 import hr.heisenbug.worxapp.helpers.StaticData;
+import hr.heisenbug.worxapp.resources.BucketResource;
+import hr.heisenbug.worxapp.resources.ServerUploadResource;
+import hr.heisenbug.worxapp.services.BucketService;
+import hr.heisenbug.worxapp.services.ServerUploadService;
 
 import static spark.Spark.setIpAddress;
 import static spark.Spark.setPort;
-import static spark.SparkBase.externalStaticFileLocation;
 import static spark.SparkBase.staticFileLocation;
 
 /**

@@ -1,4 +1,8 @@
-package hr.heisenbug.worxapp;
+package hr.heisenbug.worxapp.resources;
+
+import hr.heisenbug.worxapp.JsonTransformer;
+import hr.heisenbug.worxapp.services.ModelService;
+import spark.Spark;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -17,7 +21,7 @@ public class ModelResource {
     }
 
     private void setupEndpoints() {
-        post(API_CONTEXT + "/models", "application/json", (request, response) -> {
+        Spark.post(API_CONTEXT + "/models", "application/json", (request, response) -> {
             modelService.createNewModel(request.body());
             response.status(201);
             return response;

@@ -1,7 +1,9 @@
-package hr.heisenbug.worxapp;
+package hr.heisenbug.worxapp.services;
 
 import com.google.gson.Gson;
 import com.mongodb.*;
+import hr.heisenbug.worxapp.models.Bucket;
+import jdk.nashorn.internal.runtime.ScriptRuntime;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -36,11 +38,40 @@ public class BucketService {
                             .append("owner", bucket.getOwner())
                             .append("childModels", bucket.getChildModels())
                             .append("createdOn", new Date()));
+        System.out.println("last: " + latestId());
     }
 
     public Bucket find(String id) {
         return new Bucket((BasicDBObject) collection.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
+
+    public String latestId(){
+        List<String> result = new ArrayList<>();
+        DBCursor cursor = db.getCollection(collection.getName()).find().limit(1).sort(new BasicDBObject("_id",-1));
+        while (cursor.hasNext()) {
+            BasicDBObject obj = (BasicDBObject) cursor.next();
+            result.add(obj.getString("_id"));
+        }
+        String id = "";
+        id = result.get(0);
+        return id;
+    }
+
+    /*public Bucket findByTitle(String title, Date createdOn){
+        List<String> result = new ArrayList<>();
+        BasicDBObject query = new BasicDBObject();
+        BasicDBObject field = new BasicDBObject();
+        field.put("title",title);
+        field.put("createdOn", createdOn);
+        System.out.println("collection " + collection.getName());
+        DBCursor cursor = db.getCollection(collection.getName()).find(query,field);
+        while (cursor.hasNext()) {
+            BasicDBObject obj = (BasicDBObject) cursor.next();
+            result.add(obj.getString("_id"));
+        }
+        return find(result.get(0));
+    }*/
+
 //todo add update operation
 //    public Bucket update(String bucketId, String body) {
 //        Bucket bucket = new Gson().fromJson(body, Bucket.class);

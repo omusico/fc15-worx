@@ -1,4 +1,4 @@
-package hr.heisenbug.worxapp;
+package hr.heisenbug.worxapp.models;
 
 import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
@@ -23,6 +23,10 @@ public class Bucket {
         this.owner = dbObject.getString("owner");
         this.childModels = dbObject.getString("childModels");
         this.createdOn = dbObject.getDate("createdOn");
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitle() { return title; }

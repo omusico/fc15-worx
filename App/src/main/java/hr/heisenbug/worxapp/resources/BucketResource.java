@@ -1,4 +1,8 @@
-package hr.heisenbug.worxapp;
+package hr.heisenbug.worxapp.resources;
+
+import hr.heisenbug.worxapp.JsonTransformer;
+import hr.heisenbug.worxapp.services.BucketService;
+import spark.Spark;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -18,7 +22,7 @@ public class BucketResource {
     }
 
     private void setupEndpoints() {
-        post(API_CONTEXT + "/projects", "application/json", (request, response) -> {
+        Spark.post(API_CONTEXT + "/projects", "application/json", (request, response) -> {
             bucketService.createNewBucket(request.body());
             response.status(201);
             return response;
@@ -31,6 +35,10 @@ public class BucketResource {
         get(API_CONTEXT + "/projects", "application/json", (request, response)
 
                 -> bucketService.findAll(), new JsonTransformer());
+
+        get(API_CONTEXT + "/lastProject", "application/json", (request, response)
+
+                -> bucketService.latestId(), new JsonTransformer());
 //todo add update route
 //      put(API_CONTEXT + "/projects/:id", "application/json", (request, response)
 //

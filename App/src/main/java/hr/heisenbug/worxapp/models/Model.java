@@ -1,4 +1,4 @@
-package hr.heisenbug.worxapp;
+package hr.heisenbug.worxapp.models;
 
 import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
@@ -20,7 +20,7 @@ public class Model {
         this.id = ((ObjectId) dbObject.get("_id")).toString();
         this.title = dbObject.getString("title");
         this.urn = dbObject.getString("urn");
-        this.parentBucket = dbObject.getString("parent_bucket");
+        this.parentBucket = dbObject.getString("parentBucket");
         this.createdOn = dbObject.getDate("createdOn");
     }
 

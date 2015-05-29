@@ -1,7 +1,9 @@
-package hr.heisenbug.worxapp;
+package hr.heisenbug.worxapp.services;
 
 import com.google.gson.Gson;
 import com.mongodb.*;
+import hr.heisenbug.worxapp.models.Bucket;
+import hr.heisenbug.worxapp.models.Model;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -34,11 +36,12 @@ public class ModelService {
         Model model = new Gson().fromJson(body, Model.class);
         collection.insert(new BasicDBObject("title", model.getTitle())
                 .append("url", model.getUrn())
-                .append("parent_bucket", model.getParentBucket())
+                .append("parentBucket", model.getParentBucket())
                 .append("createdOn", new Date()));
+        //return model.getId();
     }
 
-    public Bucket find(String id){
-        return new Bucket((BasicDBObject) collection.findOne(new BasicDBObject("_id", new ObjectId(id))));
+    public Model find(String id){
+        return new Model((BasicDBObject) collection.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
 }

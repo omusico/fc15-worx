@@ -1,5 +1,5 @@
 /**
- * Created by shekhargulati on 10/06/14.
+ * Created by vlazar on 26/05/15.
  */
 
 var app = angular.module('worxapp', [
@@ -49,8 +49,11 @@ app.controller('ListCtrl', function ($scope, $http) {
 app.controller('CreateBucketCtrl', function ($scope, $http, $location) {
     $scope.createBucket = function () {
         console.log($scope.project);
-        $http.post('/api/v1/projects', $scope.project).success(function (data) {
-            $location.path('/');
+        $http.post('/api/v1/projects', $scope.project).success(function (data, status, headers) {
+        }).success(function (data, status, headers) {
+            $http.get('/api/v1/lastProject').success(function (data) {
+                $location.path('/projects/' + data.replace('"','').replace('"',''));
+            })
         }).error(function (data, status) {
             console.log('Error ' + data)
         })
