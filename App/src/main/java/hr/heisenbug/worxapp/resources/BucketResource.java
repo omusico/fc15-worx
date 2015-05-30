@@ -32,11 +32,16 @@ public class BucketResource {
             //create bucket on Autodesk side
             String projectTitle = new Gson().fromJson(request.body(), Bucket.class).getTitle();
 
+
+            //replace spaces and all non-alphanumeric chars
+            projectTitle = projectTitle.toLowerCase();
+            projectTitle = projectTitle.replace(" ","_");
+            projectTitle = projectTitle.replaceAll("[^-_.a-z0-9]", "");
+
+
             BucketCreator bucketCreator = new BucketCreator(projectTitle, StaticData.getAuthorizationToken());
             /*
             TODO:
-            1. make new fields in database. This is the response:
-            {"key":"090399334051234","owner":"N8ffvGkDGg6gLJvniXdTXYRanm0irymv","createDate":1432933310200,"permissions":[{"serviceId":"N8ffvGkDGg6gLJvniXdTXYRanm0irymv","access":"full"}],"policyKey":"transient"}
             2. Catch exception or bucket creation fail. Example response:
             {"reason":"Bucket already exists"}
 
@@ -46,6 +51,7 @@ public class BucketResource {
             JsonObject apiObj =  null;
 
             try {
+
                 String bucketApiResponse = bucketCreator.createBucket();
                 apiObj = (JsonObject)parser.parse(bucketApiResponse);
                 System.out.println("Bucket api response: \n" + bucketApiResponse);

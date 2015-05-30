@@ -31,11 +31,6 @@ public class FileUploader {
 
         File uploadFile = new File(filePath);
 
-        final File upload = new File("upload");
-        if (!upload.exists() && !upload.mkdirs()) {
-            throw new RuntimeException("Failed to create directory " + upload.getAbsolutePath());
-        }
-
 
         InputStream input = null;
         BufferedReader buffer = null;
@@ -82,7 +77,7 @@ public class FileUploader {
             bos.close();
 
             // parse the response
-            System.out.println("Server returned:" + connection.getResponseCode());
+            System.out.println("Server returned: " + connection.getResponseCode());
             if (connection.getResponseCode() >= 400) {
                 input = connection.getErrorStream();
             } else {
@@ -95,16 +90,17 @@ public class FileUploader {
             StringBuffer stringBuffer = new StringBuffer();
             while ((line = buffer.readLine()) != null) {
                 stringBuffer.append(line);
-                stringBuffer.append('\r');
+                //stringBuffer.append('\r');
             }
             response = stringBuffer.toString();
 
-            System.out.println(stringBuffer);
+            System.out.println("StringBuffer: "+stringBuffer);
 
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("Error occured during file upload: "+e.getMessage());
             throw new Exception("Network error occurred during upload.");
         }
+        //System.out.println("\nRESPONSE FROM UPLOADER: "+response);
         return response;
     }
 }

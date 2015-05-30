@@ -22,26 +22,29 @@ public class ModelService {
         this.collection = db.getCollection("models");
     }
 
-    public List<Model> findAll(){
+    public List<Model> findAll() {
         List<Model> models = new ArrayList<>();
         DBCursor dbObjects = collection.find();
-        while(dbObjects.hasNext()){
+        while (dbObjects.hasNext()) {
             DBObject dbObject = dbObjects.next();
             models.add(new Model((BasicDBObject) dbObject));
         }
         return models;
     }
 
-    public void createNewModel(String body){
+    public void createNewModel(String body) {
         Model model = new Gson().fromJson(body, Model.class);
         collection.insert(new BasicDBObject("title", model.getTitle())
                 .append("url", model.getUrn())
                 .append("parentBucket", model.getParentBucket())
-                .append("createdOn", new Date()));
+                .append("createdOn", new Date())
+                .append("localPreviewPath", model.getLocalPreviewPath())
+                .append("localModelPath", model.getLocalModelPath())
+                .append("externalModelPath", model.getExternalModelPath()));
         //return model.getId();
     }
 
-    public Model find(String id){
+    public Model find(String id) {
         return new Model((BasicDBObject) collection.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
 }

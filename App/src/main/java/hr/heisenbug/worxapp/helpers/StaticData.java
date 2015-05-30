@@ -1,5 +1,7 @@
 package hr.heisenbug.worxapp.helpers;
 
+import com.mongodb.DB;
+
 /**
  * Created by mathabaws on 5/23/15.
  */
@@ -8,6 +10,7 @@ public class StaticData {
     private static String CONSUMER_KEY = "";
     private static String CONSUMER_SECRET = "";
     private static String authorizationToken ="";
+    private static DB db = null;
 
     public static String getConsumerKey() {
         return CONSUMER_KEY;
@@ -31,5 +34,13 @@ public class StaticData {
 
     public static void setAuthorizationToken(String authorizationToken) {
         StaticData.authorizationToken = authorizationToken;
+    }
+
+    public static DB getDb() {
+        return db;
+    }
+
+    public static void setDb(DB db) {
+        StaticData.db = db;
     }
 }

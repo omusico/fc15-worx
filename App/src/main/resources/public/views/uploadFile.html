@@ -1,5 +1,11 @@
 <h2>Testni upload</h2>
+<div class="alert alert-success" id="alertSuccess" style="display: none">Model successfully uploaded.</div>
+<div class="alert alert-danger" id="alertFail" style="display: none">Error during file upload.</div>
 <form class="form-horizontal" role="form" data-ng-submit='uploadFile()' data-ng-controller="UploadFileCtrl">
     <input type='file' id='uploadFile'><br>
-    <input class="btn btn-default" type='submit' value='Upload'>
+    <input class="btn btn-default" type='submit' value='Preview' id="uploadButton">
+    <a href="" id="refreshPage" onclick='refreshPage()'><br/>Not what you were looking for?</a>
 </form>
+
+<img src="#" id="uploadPreview" style="display: none"/>
+

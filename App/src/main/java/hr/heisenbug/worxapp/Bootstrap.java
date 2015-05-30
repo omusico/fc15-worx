@@ -40,10 +40,14 @@ public class Bootstrap {
         StaticData.setConsumerSecret(secret);
         StaticData.setAuthorizationToken(token);
 
+        DB mongo = mongo();
+        StaticData.setDb(mongo);
+
         //start token generator
         (new Thread(new AuthTokenGenerator())).start();
 
-        new BucketResource(new BucketService(mongo()));
+
+        new BucketResource(new BucketService(mongo));
         new ServerUploadResource(new ServerUploadService());
     }
 
