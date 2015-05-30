@@ -1,6 +1,8 @@
 package hr.heisenbug.worxapp.resources;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import hr.heisenbug.worxapp.JsonTransformer;
 import hr.heisenbug.worxapp.helpers.BucketCreator;
 import hr.heisenbug.worxapp.helpers.StaticData;
@@ -27,10 +29,6 @@ public class BucketResource {
 
     private void setupEndpoints() {
         Spark.post(API_CONTEXT + "/projects", "application/json", (request, response) -> {
-            System.out.println(request.body());
-            //create database entry
-            bucketService.createNewBucket(request.body());
-
             //create bucket on Autodesk side
             String projectTitle = new Gson().fromJson(request.body(), Bucket.class).getTitle();
 
@@ -43,16 +41,27 @@ public class BucketResource {
             {"reason":"Bucket already exists"}
 
              */
+            JsonParser parser = new JsonParser();
+            JsonObject dataObj = (JsonObject)parser.parse(request.body());
+            JsonObject apiObj =  null;
+
             try {
                 String bucketApiResponse = bucketCreator.createBucket();
+                apiObj = (JsonObject)parser.parse(bucketApiResponse);
                 System.out.println("Bucket api response: \n" + bucketApiResponse);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            String data = request.body();
+            dataObj.add("bucketKey", apiObj.get("key"));
+            String requestData = dataObj.toString();
+            System.out.println(requestData);
 
-
+            //create database entry
+            bucketService.createNewBucket(requestData);
             response.status(201);
             return response;
+
         }, new JsonTransformer());
 
         get(API_CONTEXT + "/projects/:id", "application/json", (request, response)

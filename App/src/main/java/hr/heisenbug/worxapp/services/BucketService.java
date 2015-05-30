@@ -33,11 +33,12 @@ public class BucketService {
     }
 
     public void createNewBucket(String body) {
-        Bucket bucket= new Gson().fromJson(body, Bucket.class);
+        Bucket bucket = new Gson().fromJson(body, Bucket.class);
         collection.insert(new BasicDBObject("title", bucket.getTitle())
-                            .append("owner", bucket.getOwner())
-                            .append("childModels", bucket.getChildModels())
-                            .append("createdOn", new Date()));
+                .append("owner", bucket.getOwner())
+                .append("bucketKey", bucket.getBucketKey())
+                .append("childModels", bucket.getChildModels())
+                .append("createdOn", new Date()));
         System.out.println("last: " + latestId());
     }
 
@@ -45,9 +46,9 @@ public class BucketService {
         return new Bucket((BasicDBObject) collection.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
 
-    public String latestId(){
+    public String latestId() {
         List<String> result = new ArrayList<>();
-        DBCursor cursor = db.getCollection(collection.getName()).find().limit(1).sort(new BasicDBObject("_id",-1));
+        DBCursor cursor = db.getCollection(collection.getName()).find().limit(1).sort(new BasicDBObject("_id", -1));
         while (cursor.hasNext()) {
             BasicDBObject obj = (BasicDBObject) cursor.next();
             result.add(obj.getString("_id"));
@@ -72,10 +73,26 @@ public class BucketService {
         return find(result.get(0));
     }*/
 
-//todo add update operation
+    //todo add update operation
 //    public Bucket update(String bucketId, String body) {
+//        //new bucket object from response
 //        Bucket bucket = new Gson().fromJson(body, Bucket.class);
-//        collection.update(new BasicDBObject("_id", new ObjectId(bucketId)
+//
+//        //current db entry
+//        BasicDBObject selectQuery = new BasicDBObject("_id", new ObjectId(bucketId));
+//
+//        //new db entry for update
+//        BasicDBObject updateQuery = new BasicDBObject("_id", new ObjectId(bucketId));
+//        if (updateQuery.containsKey("bucketKey")) {
+//            updateQuery.put("bucketKey", bucket.getBucketKey());
+//        } else {
+//            updateQuery.append("bucketKey", bucket.getBucketKey());
+//        }
+//
+//        //update object in db
+//        collection.update(selectQuery, updateQuery);
+//
+//
 //        return this.find(bucketId);
 //    }
 }

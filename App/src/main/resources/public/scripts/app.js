@@ -49,8 +49,19 @@ app.controller('ListCtrl', function ($scope, $http) {
 app.controller('CreateBucketCtrl', function ($scope, $http, $location) {
     $scope.createBucket = function () {
         console.log($scope.project);
+        /*$http({
+            url: '/api/v1/projects',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            data: {
+                title: $scope.project.title,
+                owner: $scope.project.owner,
+                bucketKey: '666999666'
+            }
+        })*/
         $http.post('/api/v1/projects', $scope.project).success(function (data, status, headers) {
         }).success(function (data, status, headers) {
+                console.log('DATA:' + data.toString());
             $http.get('/api/v1/lastProject').success(function (data) {
                 $location.path('/projects/' + data.replace('"','').replace('"',''));
             })
