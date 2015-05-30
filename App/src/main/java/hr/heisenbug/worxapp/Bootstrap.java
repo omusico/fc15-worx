@@ -1,6 +1,7 @@
 package hr.heisenbug.worxapp;
 
 import com.mongodb.*;
+import hr.heisenbug.worxapp.helpers.AuthTokenGenerator;
 import hr.heisenbug.worxapp.helpers.AutodeskApiHelpers;
 import hr.heisenbug.worxapp.helpers.StaticData;
 import hr.heisenbug.worxapp.resources.BucketResource;
@@ -28,6 +29,7 @@ public class Bootstrap {
         //TODO get api key and secret from settings files
         String key = "N8ffvGkDGg6gLJvniXdTXYRanm0irymv";
         String secret = "j2EATorbHKTsKr7N";
+
         //authenticate application with Autodesk api
         AutodeskApiHelpers aah = new AutodeskApiHelpers();
         String token = aah.authenticateApi(key, secret);
@@ -38,6 +40,8 @@ public class Bootstrap {
         StaticData.setConsumerSecret(secret);
         StaticData.setAuthorizationToken(token);
 
+        //start token generator
+        (new Thread(new AuthTokenGenerator())).start();
 
         new BucketResource(new BucketService(mongo()));
         new ServerUploadResource(new ServerUploadService());
