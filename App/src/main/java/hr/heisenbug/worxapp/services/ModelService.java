@@ -41,11 +41,13 @@ public class ModelService {
                 .append("createdOn", new Date())
                 .append("localPreviewPath", model.getLocalPreviewPath())
                 .append("localModelPath", model.getLocalModelPath())
-                .append("externalModelPath", model.getExternalModelPath()));
+                .append("externalModelPath", model.getExternalModelPath())
+                .append("childModels", model.getChildModels())
+                .append("modelType", model.getModelType()));
         //return model.getId();
     }
 
-    public List<Model> findAllChildren(String bucketId){
+    public List<Model> findAllChildren(String bucketId) {
         List<Model> models = new ArrayList<>();
         BasicDBObject queryObject = new BasicDBObject("parentBucket", bucketId);
         DBCursor dbObjects = collection.find(queryObject);

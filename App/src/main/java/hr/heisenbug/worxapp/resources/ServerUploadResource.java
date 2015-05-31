@@ -1,8 +1,6 @@
 package hr.heisenbug.worxapp.resources;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import hr.heisenbug.worxapp.JsonTransformer;
 import hr.heisenbug.worxapp.helpers.FileUploader;
 import hr.heisenbug.worxapp.helpers.StaticData;
@@ -17,6 +15,7 @@ import spark.Spark;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static spark.Spark.post;
@@ -81,6 +80,8 @@ public class ServerUploadResource {
             List<String> modelDependencies = sfp.parseSolidFile();
             System.out.println("Model dependencies: " + modelDependencies);
 
+            //select svih modela iz bucketa - :id
+            //da li se
 
             //preview image path
             String previewImagePath = sfp.getFinalPreviewPath();
@@ -152,7 +153,21 @@ public class ServerUploadResource {
 
 
             ModelService ms = new ModelService(StaticData.getDb());
+            Gson gson = new GsonBuilder().create();
+            String childModels = gson.toJson(modelDependencies);
+            System.out.println("childModels: " + childModels);
 
+            //check fileType
+            String extension = alternateKey.substring(alternateKey.lastIndexOf(".")+1);
+            String fileType = null;
+            if(extension.toLowerCase().equals("sldasm")){
+                fileType = "sldasm";
+            }
+            else if(extension.toLowerCase().equals("sldprt")){
+                fileType = "sldprt";
+            }
+            System.out.println("fileType " + extension.toLowerCase());
+            System.out.println("fileType " + fileType);
 
             JsonObject modelObject = new JsonObject();
             modelObject.addProperty("title", key);
@@ -162,6 +177,9 @@ public class ServerUploadResource {
             modelObject.addProperty("localPreviewPath", "/img/generated/" + previewImagePath.substring(previewImagePath.lastIndexOf("/") + 1));
             modelObject.addProperty("localModelPath", modelNewName.getPath());
             modelObject.addProperty("externalModelPath", location);
+            modelObject.addProperty("childModels", childModels);
+            modelObject.addProperty("modelType", fileType);
+
             //Create json definition of model
             ms.createNewModel(modelObject.toString());
             System.out.println("Model Spremljen u bazu.");
