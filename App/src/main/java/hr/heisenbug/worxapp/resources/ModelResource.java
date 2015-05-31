@@ -34,6 +34,11 @@ public class ModelResource {
         get(API_CONTEXT + "/models", "application/json", (request, response)
 
                 -> modelService.findAll(), new JsonTransformer());
+
+        get(API_CONTEXT + "/models/childModels/:parentBucket", "application/json", (request, response)
+
+                -> modelService.findAllChildren(request.params(":parentBucket")), new JsonTransformer());
+
 //todo add update route
 //      put(API_CONTEXT + "/projects/:id", "application/json", (request, response)
 //

@@ -44,6 +44,18 @@ public class ModelService {
         //return model.getId();
     }
 
+    public List<Model> findAllChildren(String bucketId){
+        List<Model> models = new ArrayList<>();
+        BasicDBObject queryObject = new BasicDBObject("parentBucket", bucketId);
+        DBCursor dbObjects = collection.find(queryObject);
+        while (dbObjects.hasNext()) {
+            DBObject dbObject = dbObjects.next();
+            models.add(new Model((BasicDBObject) dbObject));
+        }
+        System.out.println("findAllChildren() of " + bucketId + " = " + models);
+        return models;
+    }
+
     public Model find(String id) {
         return new Model((BasicDBObject) collection.findOne(new BasicDBObject("_id", new ObjectId(id))));
     }
