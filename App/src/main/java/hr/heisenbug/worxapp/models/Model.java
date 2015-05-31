@@ -12,6 +12,7 @@ public class Model {
 
     private String id;
     private String title;
+    private String alternateTitle;
     private String urn;
     private String parentBucket;
     private Date createdOn = new Date();
@@ -23,6 +24,7 @@ public class Model {
     public Model(BasicDBObject dbObject) {
         this.id = ((ObjectId) dbObject.get("_id")).toString();
         this.title = dbObject.getString("title");
+        this.alternateTitle = dbObject.getString("alternateTitle");
         this.urn = dbObject.getString("urn");
         this.parentBucket = dbObject.getString("parentBucket");
         this.createdOn = dbObject.getDate("createdOn");
@@ -39,6 +41,10 @@ public class Model {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getAlternateTitle() {
+        return alternateTitle;
     }
 
     public String getUrn() {
