@@ -3,6 +3,7 @@ package hr.heisenbug.worxapp;
 import com.mongodb.*;
 import hr.heisenbug.worxapp.helpers.AuthTokenGenerator;
 import hr.heisenbug.worxapp.helpers.AutodeskApiHelpers;
+import hr.heisenbug.worxapp.helpers.ReferenceSetter;
 import hr.heisenbug.worxapp.helpers.StaticData;
 import hr.heisenbug.worxapp.resources.BucketResource;
 import hr.heisenbug.worxapp.resources.ModelResource;
@@ -10,6 +11,9 @@ import hr.heisenbug.worxapp.resources.ServerUploadResource;
 import hr.heisenbug.worxapp.services.BucketService;
 import hr.heisenbug.worxapp.services.ModelService;
 import hr.heisenbug.worxapp.services.ServerUploadService;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static spark.Spark.setIpAddress;
 import static spark.Spark.setPort;
@@ -29,8 +33,8 @@ public class Bootstrap {
 
         //set api key and secret
         //TODO get api key and secret from settings files
-        String key = "WGkaBoGl39JX8BC05DhGq5mwMObZgvDi";
-        String secret = "B2afc8b10f8be4e3";
+        String key = "N8ffvGkDGg6gLJvniXdTXYRanm0irymv";
+        String secret = "G90a3029b039b420";
 
         //authenticate application with Autodesk api
         AutodeskApiHelpers aah = new AutodeskApiHelpers();
@@ -52,6 +56,8 @@ public class Bootstrap {
         new BucketResource(new BucketService(mongo));
         new ServerUploadResource(new ServerUploadService());
         new ModelResource(new ModelService(mongo));
+
+        testReference();
     }
 
     //todo refactor
@@ -74,5 +80,36 @@ public class Bootstrap {
         } else {
             throw new RuntimeException("Not able to authenticate with MongoDB");
         }
+    }
+
+    private static void testReference(){
+
+        String masterURN = "urn:adsk.objects:os.object:referencetesst/vrotor_s_utorom1.sldasm";
+        String child1 = "urn:adsk.objects:os.object:referencetesst/vzenska_osovina1.sldprt";
+        String child2 = "urn:adsk.objects:os.object:referencetesst/vsipka_rotora1.sldprt";
+        String child3 = "urn:adsk.objects:os.object:referencetesst/vmuska_osovina1.sldprt";
+        List<String[]> dependencies = new LinkedList<>();
+
+        String[] child11 = new String[2];
+        child11[0] = child1;
+        child11[1] = child1.substring(child1.lastIndexOf("/")+1);
+        dependencies.add(child11);
+
+        String[] child22 = new String[2];
+        child11[0] = child2;
+        child11[1] = child2.substring(child2.lastIndexOf("/")+1);
+        dependencies.add(child22);
+
+        String[] child33 = new String[2];
+        child11[0] = child3;
+        child11[1] = child3.substring(child3.lastIndexOf("/")+1);
+        dependencies.add(child33);
+
+
+        String parentPath = masterURN.substring(masterURN.lastIndexOf("/")+1);
+        ReferenceSetter rs = new ReferenceSetter(masterURN, parentPath,dependencies,StaticData.getAuthorizationToken());
+        Boolean success = rs.setReferences();
+        System.out.println("Successfull;: "+success);
+
     }
 }
