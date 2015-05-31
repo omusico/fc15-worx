@@ -5,8 +5,10 @@ import hr.heisenbug.worxapp.helpers.AuthTokenGenerator;
 import hr.heisenbug.worxapp.helpers.AutodeskApiHelpers;
 import hr.heisenbug.worxapp.helpers.StaticData;
 import hr.heisenbug.worxapp.resources.BucketResource;
+import hr.heisenbug.worxapp.resources.ModelResource;
 import hr.heisenbug.worxapp.resources.ServerUploadResource;
 import hr.heisenbug.worxapp.services.BucketService;
+import hr.heisenbug.worxapp.services.ModelService;
 import hr.heisenbug.worxapp.services.ServerUploadService;
 
 import static spark.Spark.setIpAddress;
@@ -28,7 +30,7 @@ public class Bootstrap {
         //set api key and secret
         //TODO get api key and secret from settings files
         String key = "WGkaBoGl39JX8BC05DhGq5mwMObZgvDi";
-        String secret = "4IbMAFLeH8GWb6C4";
+        String secret = "B2afc8b10f8be4e3";
 
         //authenticate application with Autodesk api
         AutodeskApiHelpers aah = new AutodeskApiHelpers();
@@ -49,6 +51,7 @@ public class Bootstrap {
 
         new BucketResource(new BucketService(mongo));
         new ServerUploadResource(new ServerUploadService());
+        new ModelResource(new ModelService(mongo));
     }
 
     //todo refactor

@@ -6,27 +6,73 @@
         </a>
     </h1>
 </div>
+<div class="container-fluid">
 
-<div class="col-sm-6">
-    <h4>Details</h4>
-    <hr>
-    <p><b>_id:</b> {{project.id}}</p>
-    <p><b>Owner:</b> {{project.owner}}</p>
 
-    <p><b>Created On:</b> {{project.createdOn}}</p>
+    <div class="col-sm-3">
+        <h4>Details</h4>
+        <hr>
+        <p><b>_id:</b> {{project.id}}</p>
 
-    <p><b>Bucket name:</b> {{project.bucketKey}}</p>
+        <p><b>Owner:</b> {{project.owner}}</p>
 
-    <p><b>TO DO - add more details???</b></p>
-</div>
+        <p><b>Created On:</b> {{project.createdOn}}</p>
 
-<div class="col-sm-6">
-    <h4>Models List</h4>
-    <hr>
-    <p>{{models}}</p>
-</div>
+        <p><b>Bucket name:</b> {{project.bucketKey}}</p>
 
-<div class="col-sm-12">
-    <h4>Quick Preview</h4>
-    <hr>
+        <p><b>TO DO - add more details???</b></p>
+
+        <br><br>
+
+        <h4>Child/Parent list</h4>
+        
+    </div>
+
+    <div class="col-sm-9">
+        <h4>Uploaded Models List</h4>
+        <hr>
+        <table class="table table-hover">
+            <th>
+                #
+            </th>
+            <th>
+                Model name
+            </th>
+            <th>
+                Preview image
+            </th>
+            <th>
+                Created on
+            </th>
+            <th>
+                3D Preview
+            </th>
+            <tr class="" ng-repeat="m in models">
+                <td>
+                    {{$index+1}}
+                </td>
+                <td>
+                    {{m.title}}
+                </td>
+                <td>
+                    {{m.createdOn |date:'medium'}}
+                </td>
+                <td>
+                    <img class="img-responsive" src="{{m.localPreviewPath}}" alt="Preview Image"/>
+                </td>
+
+                <td>
+                    <a class="btn btn-sm btn-primary" href="#">
+                        <i class="icon-plus-sign icon-white"></i>
+                        3D Preview
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-sm-12">
+        <h4>Quick Preview</h4>
+        <hr>
+    </div>
 </div>

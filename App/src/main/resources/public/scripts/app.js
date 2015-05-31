@@ -76,7 +76,9 @@ app.controller('ViewBucketCtrl', function ($scope, $http, $routeParams) {
 
     $http.get('/api/v1/projects/' + $scope.projectId).success(function (data) {
         $scope.project = data;
-        $http.get('/api/v1/models/childModels/' + $scope.projectId).success(function(data){
+        console.log('PROJECT: ' + data);
+        $http.get('/api/v1/models/child/' + $scope.project.id).success(function(data){
+            console.log('MODELS: ' + data);
             $scope.models = data;
         }).error(function (data, status) {
             console.log('Error ' + data)
