@@ -4,7 +4,7 @@
 <form class="form-horizontal" role="form" data-ng-submit='uploadFile()' data-ng-controller="UploadFileCtrl">
     <input type='file' id='uploadFile'><br>
     <input class="btn btn-default" type='submit' value='Preview' id="uploadButton">
-    <a href="" id="refreshPage" onclick='refreshPage()'><br/>Not what you were looking for?</a>
+    <a href="#" id="refreshPage" ng-click='refreshLocation()'><br/>Not what you were looking for?</a>
 </form>
 
 <img src="#" id="uploadPreview" style="display: none"/>

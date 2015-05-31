@@ -81,7 +81,7 @@ app.controller('ViewBucketCtrl', function ($scope, $http, $routeParams) {
     })
 });
 
-app.controller('UploadFileCtrl', function ($scope, $http, $routeParams, $location, FileUploader) {
+app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, $location, FileUploader) {
     //variable for differing upload to local server or autodesk server
     $scope.source = true;
     //parameter is bucket ID
@@ -171,6 +171,16 @@ app.controller('UploadFileCtrl', function ($scope, $http, $routeParams, $locatio
         $scope.setSource = function (source) {
             console.log("setSource: " + source);
             $scope.source = source;
+        }
+        $scope.refreshLocation = function(){
+
+            $location.path("/#/projects/"+$scope.fileId);
+
+            //$scope.refresh.href = "/#/uploadFile/"+$scope.fileId;
+            console.log("/fileUpload/"+$scope.fileId);
+            //$scope.$route.reload();
+
+
         }
 
     };
