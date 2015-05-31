@@ -3,6 +3,7 @@ package hr.heisenbug.worxapp.resources;
 import com.google.gson.*;
 import hr.heisenbug.worxapp.JsonTransformer;
 import hr.heisenbug.worxapp.helpers.FileUploader;
+import hr.heisenbug.worxapp.helpers.RegisterService;
 import hr.heisenbug.worxapp.helpers.StaticData;
 import hr.heisenbug.worxapp.models.Bucket;
 import hr.heisenbug.worxapp.models.Model;
@@ -158,12 +159,11 @@ public class ServerUploadResource {
             System.out.println("childModels: " + childModels);
 
             //check fileType
-            String extension = alternateKey.substring(alternateKey.lastIndexOf(".")+1);
+            String extension = alternateKey.substring(alternateKey.lastIndexOf(".") + 1);
             String fileType = null;
-            if(extension.toLowerCase().equals("sldasm")){
+            if (extension.toLowerCase().equals("sldasm")) {
                 fileType = "sldasm";
-            }
-            else if(extension.toLowerCase().equals("sldprt")){
+            } else if (extension.toLowerCase().equals("sldprt")) {
                 fileType = "sldprt";
             }
             System.out.println("fileType " + extension.toLowerCase());
@@ -179,6 +179,9 @@ public class ServerUploadResource {
             modelObject.addProperty("externalModelPath", location);
             modelObject.addProperty("childModels", childModels);
             modelObject.addProperty("modelType", fileType);
+
+            Boolean registered = RegisterService.registerModel(id, StaticData.getAuthorizationToken());
+            System.out.println("Model registered: " + registered);
 
             //Create json definition of model
             ms.createNewModel(modelObject.toString());

@@ -84,10 +84,10 @@ public class Bootstrap {
 
     private static void testReference(){
 
-        String masterURN = "urn:adsk.objects:os.object:referencetesst/vrotor_s_utorom1.sldasm";
-        String child1 = "urn:adsk.objects:os.object:referencetesst/vzenska_osovina1.sldprt";
-        String child2 = "urn:adsk.objects:os.object:referencetesst/vsipka_rotora1.sldprt";
-        String child3 = "urn:adsk.objects:os.object:referencetesst/vmuska_osovina1.sldprt";
+        String masterURN = "urn:adsk.objects:os.object:registerbasebug/vrotor_s_utorom1.sldasm";
+        String child1 = "urn:adsk.objects:os.object:registerbasebug/vzenska_osovina1.sldprt";
+        String child2 = "urn:adsk.objects:os.object:registerbasebug/vsipka_rotora1.sldprt";
+        String child3 = "urn:adsk.objects:os.object:registerbasebug/vmuska_osovina1.sldprt";
         List<String[]> dependencies = new LinkedList<>();
 
         String[] child11 = new String[2];
