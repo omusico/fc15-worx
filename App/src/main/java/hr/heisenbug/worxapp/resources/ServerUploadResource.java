@@ -16,6 +16,7 @@ import jdk.nashorn.internal.parser.JSONParser;
 import spark.Spark;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static spark.Spark.post;
@@ -99,8 +100,29 @@ public class ServerUploadResource {
 
             //System.out.println("upload file data:\n"+bucket.getBucketKey() + "\n"+sfp.getFileName());
             String resp = "";
+
+            //remove spaces and non alphanumeric chars
+            String alternateKey = sfp.getFileName();
+            //parse name from filepath
+            alternateKey = alternateKey.substring(alternateKey.lastIndexOf("/") + 1);
+            alternateKey = alternateKey.toLowerCase();
+            alternateKey = alternateKey.replace(" ", "_");
+            alternateKey = alternateKey.replaceAll("[^-_.a-z0-9]", "");
+            //get path where file is located
+            String oldPath = sfp.getFileName();
+            oldPath = oldPath.substring(0, oldPath.lastIndexOf("/") + 1);
+            System.out.println(oldPath);
+
+            //files for rename
+            File modelOldName = new File(sfp.getFileName());
+            File modelNewName = new File(oldPath + alternateKey);
+
+            System.out.println("Novo ime modela: " + modelNewName.getPath() + "\nStaro ime modela: " + sfp.getFileName());
+            //renamne them
+            modelOldName.renameTo(modelNewName);
+
             try {
-                resp = FileUploader.uploadFile(bucket.getBucketKey(), StaticData.getAuthorizationToken(), sfp.getFileName());
+                resp = FileUploader.uploadFile(bucket.getBucketKey(), StaticData.getAuthorizationToken(), modelNewName.getPath());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -131,13 +153,15 @@ public class ServerUploadResource {
 
             ModelService ms = new ModelService(StaticData.getDb());
 
+
             JsonObject modelObject = new JsonObject();
-            modelObject.addProperty("title",key);
-            modelObject.addProperty("url",id);
-            modelObject.addProperty("parentBucket",request.params(":id"));
+            modelObject.addProperty("title", key);
+            modelObject.addProperty("alternateTitle", alternateKey);
+            modelObject.addProperty("urn", id);
+            modelObject.addProperty("parentBucket", request.params(":id"));
             modelObject.addProperty("localPreviewPath", "/img/generated/" + previewImagePath.substring(previewImagePath.lastIndexOf("/") + 1));
-            modelObject.addProperty("localModelPath",sfp.getFileName());
-            modelObject.addProperty("externalModelPath",location);
+            modelObject.addProperty("localModelPath", modelNewName.getPath());
+            modelObject.addProperty("externalModelPath", location);
             //Create json definition of model
             ms.createNewModel(modelObject.toString());
             System.out.println("Model Spremljen u bazu.");

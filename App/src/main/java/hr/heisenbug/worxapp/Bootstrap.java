@@ -29,8 +29,13 @@ public class Bootstrap {
 
         //set api key and secret
         //TODO get api key and secret from settings files
+<<<<<<< HEAD
         String key = "WGkaBoGl39JX8BC05DhGq5mwMObZgvDi";
         String secret = "B2afc8b10f8be4e3";
+=======
+        String key = "N8ffvGkDGg6gLJvniXdTXYRanm0irymv";
+        String secret = "G90a3029b039b420";
+>>>>>>> 09ca8b0f3e77e5ab7069eb41a2f4da75f374f2bb
 
         //authenticate application with Autodesk api
         AutodeskApiHelpers aah = new AutodeskApiHelpers();

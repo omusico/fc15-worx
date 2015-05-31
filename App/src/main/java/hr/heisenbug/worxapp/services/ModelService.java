@@ -35,6 +35,7 @@ public class ModelService {
     public void createNewModel(String body) {
         Model model = new Gson().fromJson(body, Model.class);
         collection.insert(new BasicDBObject("title", model.getTitle())
+                .append("alternateTitle", model.getAlternateTitle())
                 .append("url", model.getUrn())
                 .append("parentBucket", model.getParentBucket())
                 .append("createdOn", new Date())

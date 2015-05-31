@@ -28,6 +28,9 @@ public class FileUploader {
 
         String urn = null;
 
+        System.out.println("\nBucket name: "+bucketName);
+        System.out.println("Auth token: "+authToken);
+        System.out.println("FilePat: "+filePath);
 
         File uploadFile = new File(filePath);
 
@@ -77,7 +80,7 @@ public class FileUploader {
             bos.close();
 
             // parse the response
-            System.out.println("Server returned: " + connection.getResponseCode());
+            //System.out.println("Server returned: " + connection.getResponseCode());
             if (connection.getResponseCode() >= 400) {
                 input = connection.getErrorStream();
             } else {
