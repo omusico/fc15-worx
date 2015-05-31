@@ -80,6 +80,9 @@ app.controller('ViewBucketCtrl', function ($scope, $http, $routeParams) {
         $http.get('/api/v1/models/child/' + $scope.project.id).success(function(data){
             console.log('MODELS: ' + data);
             $scope.models = data;
+
+
+
         }).error(function (data, status) {
             console.log('Error ' + data)
         })
@@ -160,6 +163,10 @@ app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, 
 
                 img.style.display = "block";
                 img.src = "/img/generated/" + imageName;
+                /*if($scope.route === "uploadFileExternal/"){
+                    console.log("ID: " +$scope.projectId);
+                    $location.path("/projects/"+$scope.projectId);
+                }*/
             }, function () {
                 console.log("Los je upload !");
                 successs.style.display = "none";

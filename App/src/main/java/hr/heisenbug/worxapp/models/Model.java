@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import org.bson.types.ObjectId;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by vlazar on 5/28/15.
@@ -20,6 +21,8 @@ public class Model {
     private String localPreviewPath;
     private String localModelPath;
     private String externalModelPath;
+    private String childModels;
+    private String modelType;
 
     public Model(BasicDBObject dbObject) {
         this.id = ((ObjectId) dbObject.get("_id")).toString();
@@ -32,6 +35,8 @@ public class Model {
         this.localPreviewPath = dbObject.getString("localPreviewPath");
         this.localModelPath = dbObject.getString("localModelPath");
         this.externalModelPath = dbObject.getString("externalModelPath");
+        this.childModels = dbObject.getString("childModels");
+        this.modelType = dbObject.getString("modelType");
 
     }
 
@@ -69,5 +74,13 @@ public class Model {
 
     public String getExternalModelPath() {
         return externalModelPath;
+    }
+
+    public String getChildModels() {
+        return childModels;
+    }
+
+    public String getModelType() {
+        return modelType;
     }
 }
