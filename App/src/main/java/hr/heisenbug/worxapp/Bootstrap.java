@@ -8,6 +8,7 @@ import hr.heisenbug.worxapp.helpers.StaticData;
 import hr.heisenbug.worxapp.resources.BucketResource;
 import hr.heisenbug.worxapp.resources.ModelResource;
 import hr.heisenbug.worxapp.resources.ServerUploadResource;
+import hr.heisenbug.worxapp.resources.StaticDataResource;
 import hr.heisenbug.worxapp.services.BucketService;
 import hr.heisenbug.worxapp.services.ModelService;
 import hr.heisenbug.worxapp.services.ServerUploadService;
@@ -33,8 +34,8 @@ public class Bootstrap {
 
         //set api key and secret
         //TODO get api key and secret from settings files
-        String key = "N8ffvGkDGg6gLJvniXdTXYRanm0irymv";
-        String secret = "G90a3029b039b420";
+        String key = "goGMTbnKfDaVaejjdILG3Aaze62jg4Go";
+        String secret = "ZnYO4e8A04nFe2iH";
 
         //authenticate application with Autodesk api
         AutodeskApiHelpers aah = new AutodeskApiHelpers();
@@ -56,6 +57,7 @@ public class Bootstrap {
         new BucketResource(new BucketService(mongo));
         new ServerUploadResource(new ServerUploadService());
         new ModelResource(new ModelService(mongo));
+        new StaticDataResource();
 
         testReference();
     }
@@ -106,7 +108,7 @@ public class Bootstrap {
         dependencies.add(child33);
 
 
-        String parentPath = masterURN.substring(masterURN.lastIndexOf("/")+1);
+        String parentPath = masterURN.substring(masterURN.lastIndexOf("/") + 1);
         ReferenceSetter rs = new ReferenceSetter(masterURN, parentPath,dependencies,StaticData.getAuthorizationToken());
         Boolean success = rs.setReferences();
         System.out.println("Successfull;: "+success);

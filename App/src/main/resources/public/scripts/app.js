@@ -23,6 +23,9 @@ app.config(function ($routeProvider) {
     }).when('/projects/:id', {
         templateUrl: 'views/viewBucket.html',
         controller: 'ViewBucketCtrl'
+    }).when('/3dview/:id', {
+        templateUrl: 'views/view3DModel.html',
+        controller: 'View3DModelCtrl'
     }).when('/uploadFile/:id', {
         templateUrl: 'views/uploadFile.html',
         controller: 'UploadFileCtrl'
@@ -101,6 +104,45 @@ app.controller('ViewBucketCtrl', function ($scope, $http, $routeParams) {
     }).error(function (data, status) {
         console.log('Error ' + data)
     })
+});
+
+app.controller('View3DModelCtrl', function ($rootScope, $scope, $http, $routeParams) {
+    $scope.modelId = $routeParams.id;
+    $http.get('/api/v1/models/' + $scope.modelId).success(function (data){
+        $rootScope.model = data;
+        $http.get('/api/v1/authToken').success(function (data){
+            console.log('AUTH DATA: ' + data);
+            $scope.authToken = data;
+            $scope.urn = $rootScope.model.urn;
+            console.log("MODEL URN FROM DB: " + $scope.urn);
+            intialize3D($scope.urn, $scope.authToken);
+            //createViewerToolbarCanvas($("#lmvdbg_toolbar_canvas_div")[0]);
+        }).error(function (data, status) {
+            console.log('Error ' + data)
+        })
+
+    }).error(function (data, status) {
+        console.log('Error ' + data)
+    })
+
+   /* $http.get('/api/v1/projects/' + $scope.projectId).success(function (data) {
+        $scope.project = data;
+        console.log('PROJECT: ' + data);
+        $http.get('/api/v1/models/child/' + $scope.project.id).success(function (data) {
+            console.log('MODELS: ' + data);
+            $scope.models = data;
+            $http.get('/api/v1/models/assemblies/' + $scope.project.id).success(function (data) {
+                console.log('ASSEMBLIES: ' + data);
+                $scope.assemblies = data;
+            }).error(function (data, status) {
+                console.log('Error ' + data)
+            })
+        }).error(function (data, status) {
+            console.log('Error ' + data)
+        })
+    }).error(function (data, status) {
+        console.log('Error ' + data)
+    })*/
 });
 
 app.controller('UploadFileCtrl', function ($rootScope, $scope, $route, $http, $routeParams, $location, FileUploader) {

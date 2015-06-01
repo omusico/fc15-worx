@@ -71,6 +71,10 @@ table {
     overflow: hidden;
 }
 
+#uploadPreview{
+    padding-top: 25px;
+}
+
 .btn-file input[type=file] {
     position: absolute;
     top: 0;

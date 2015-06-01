@@ -36,7 +36,7 @@ public class ModelService {
         Model model = new Gson().fromJson(body, Model.class);
         collection.insert(new BasicDBObject("title", model.getTitle())
                 .append("alternateTitle", model.getAlternateTitle())
-                .append("url", model.getUrn())
+                .append("urn", model.getUrn())
                 .append("parentBucket", model.getParentBucket())
                 .append("createdOn", new Date())
                 .append("localPreviewPath", model.getLocalPreviewPath())

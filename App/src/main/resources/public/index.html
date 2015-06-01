@@ -2,6 +2,10 @@
 <html ng-app="worxapp">
 <head>
     <title>WORX 3D preview & share</title>
+
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.css?v=v1.2.15" type="text/css">
+
+
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css">
     <link rel="stylesheet" href="/css/main.css">
@@ -25,7 +29,6 @@
 
 <div class="container" ng-view="">
 
-
 </div>
 
 <script src="/js/jquery.js"></script>
@@ -35,6 +38,12 @@
 <script src="/js/angular-sanitize.js"></script>
 <script src="/js/angular-resource.js"></script>
 <script src='/js/angular-file-uploader.js'></script>
+<script src="/js/lmvworker.min.js"></script>
+<script src="/js/adsk_three.min.js"></script>
+<script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>
+<script src="/js/Autodesk.ADN.Toolkit.ViewData.js"></script>
+<script src="/js/Autodesk.ADN.Toolkit.Viewer.js"></script>
+<script src="/scripts/3DViewerSettings.js"></script>
 <script src="/scripts/app.js"></script>
 </body>
 </html>
