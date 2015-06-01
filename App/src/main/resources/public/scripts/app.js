@@ -77,12 +77,15 @@ app.controller('ViewBucketCtrl', function ($scope, $http, $routeParams) {
     $http.get('/api/v1/projects/' + $scope.projectId).success(function (data) {
         $scope.project = data;
         console.log('PROJECT: ' + data);
-        $http.get('/api/v1/models/child/' + $scope.project.id).success(function(data){
+        $http.get('/api/v1/models/child/' + $scope.project.id).success(function (data) {
             console.log('MODELS: ' + data);
             $scope.models = data;
-
-
-
+            $http.get('/api/v1/models/assemblies/' + $scope.project.id).success(function (data) {
+                console.log('ASSEMBLIES: ' + data);
+                $scope.assemblies = data;
+            }).error(function (data, status) {
+                console.log('Error ' + data)
+            })
         }).error(function (data, status) {
             console.log('Error ' + data)
         })
@@ -164,9 +167,9 @@ app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, 
                 img.style.display = "block";
                 img.src = "/img/generated/" + imageName;
                 /*if($scope.route === "uploadFileExternal/"){
-                    console.log("ID: " +$scope.projectId);
-                    $location.path("/projects/"+$scope.projectId);
-                }*/
+                 console.log("ID: " +$scope.projectId);
+                 $location.path("/projects/"+$scope.projectId);
+                 }*/
             }, function () {
                 console.log("Los je upload !");
                 successs.style.display = "none";
@@ -186,12 +189,12 @@ app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, 
             console.log("setSource: " + source);
             $scope.source = source;
         }
-        $scope.refreshLocation = function(){
+        $scope.refreshLocation = function () {
 
-            $location.path("/#/projects/"+$scope.fileId);
+            $location.path("/#/projects/" + $scope.fileId);
 
             //$scope.refresh.href = "/#/uploadFile/"+$scope.fileId;
-            console.log("/fileUpload/"+$scope.fileId);
+            console.log("/fileUpload/" + $scope.fileId);
             //$scope.$route.reload();
 
 

@@ -11,14 +11,38 @@
     <div class="col-sm-4">
         <h4>Details</h4>
         <hr>
-    <table class="table table-hover">
-        <tr><b>Id: </b>  {{project.id}}<br></tr>
-        <tr><b>Owner: </b>  {{project.owner}}<br></tr>
-        <tr><b>Created On: </b>  {{project.createdOn |date:'medium'}}<br></tr>
-    </table>
+        <table class="table table-hover">
+            <tr>
+                <td><b>Id: </b></td>
+                <td>{{project.id}}</td>
+            </tr>
+            <tr>
+                <td><b>Owner: </b></td>
+                <td>{{project.owner}}</td>
+            </tr>
+            <tr>
+                <td><b>Created On: </b></td>
+                <td>{{project.createdOn |date:'medium'}}</td>
+            </tr>
+        </table>
 
         <h4>Child/Parent list</h4>
         <hr>
+        <table class="table table-hover">
+            <th>
+                Parent
+            </th>
+            <th>
+                Children
+            </th>
+            <tr ng-repeat="a in assemblies">
+                <td>{{a.title}}</td>
+                <td>
+                    {{a.childModels}}
+                </td>
+            </tr>
+        </table>
+
 
 
     </div>

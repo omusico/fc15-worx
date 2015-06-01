@@ -154,9 +154,22 @@ public class ServerUploadResource {
 
 
             ModelService ms = new ModelService(StaticData.getDb());
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new Gson();
+            /*String childModels = gson.toJson(modelDependencies);
+            JsonObject children = new JsonObject();
+            for(int i=0; i<modelDependencies.size(); i++){
+                children.addProperty("name", modelDependencies.get(i));
+            }*/
             String childModels = gson.toJson(modelDependencies);
-            System.out.println("childModels: " + childModels);
+            JsonObject children = new JsonObject();
+            String c = "";
+            for (int i = 0; i < modelDependencies.size(); i++) {
+                c += modelDependencies.get(i);
+                c += ", ";
+            }
+
+
+            System.out.println("childModels: " + children);
 
             //check fileType
             String extension = alternateKey.substring(alternateKey.lastIndexOf(".") + 1);
@@ -177,7 +190,7 @@ public class ServerUploadResource {
             modelObject.addProperty("localPreviewPath", "/img/generated/" + previewImagePath.substring(previewImagePath.lastIndexOf("/") + 1));
             modelObject.addProperty("localModelPath", modelNewName.getPath());
             modelObject.addProperty("externalModelPath", location);
-            modelObject.addProperty("childModels", childModels);
+            modelObject.addProperty("childModels", c);
             modelObject.addProperty("modelType", fileType);
 
             Boolean registered = RegisterService.registerModel(id, StaticData.getAuthorizationToken());

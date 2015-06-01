@@ -39,6 +39,10 @@ public class ModelResource {
 
                 -> modelService.findAllChildren(request.params(":id")), new JsonTransformer());
 
+        get(API_CONTEXT + "/models/assemblies/:id", "application/json", (request, response)
+
+                -> modelService.findAllAssemblies(request.params(":id")), new JsonTransformer());
+
 //todo add update route
 //      put(API_CONTEXT + "/projects/:id", "application/json", (request, response)
 //
