@@ -1,54 +1,52 @@
-<h2>All projects
-    <!--<a class="btn btn-primary pull-right" href="#/create"><i
-        class="icon-plus-sign icon-white"></i> New Todo</a>-->
+<h1>
+    Projects List
     <a class="btn btn-primary pull-right" href="#/createBucket"><i
             class="icon-plus-sign icon-white"></i> New Project</a>
-    <!--<a class="btn btn-primary" href="#/uploadFile"><i
-            class="icon-plus-sign icon-white"></i> Upload File</a>-->
-</h2>
-
-<table class="table table-hover">
-    <tr>
-        <th>
-            #
-        </th>
-        <th>
-            Title
-        </th>
-        <th>
-            Owner
-        </th>
-        <th>
-            Created On
-        </th>
-        <th>
-            Details
-        </th>
-        <th>
-            Share
-        </th>
-    </tr>
-    <tr class="" ng-repeat="project in projects">
-        <td>
-            {{$index+1}}
-        </td>
-        <td>
-            {{project.title}}
-        </td>
-        <td>
-            {{project.owner}}
-        </td>
-        <td>
-            {{project.createdOn |date:'medium'}}
-        </td>
-        <td>
-            <a class="btn btn-sm btn-primary" href="#/projects/{{project.id}}">
-                <i class="icon-plus-sign icon-white"></i>
+</h1>
+<div class="bg-grey">
+    <table class="table table-hover">
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Owner
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
                 Details
-            </a>
-        </td>
-        <td>
-            todo add link
-        </td>
-    </tr>
-</table>
+            </th>
+            <th>
+                Share
+            </th>
+        </tr>
+        <tr class="" ng-repeat="project in projects">
+            <td>
+                {{$index+1}}
+            </td>
+            <td>
+                {{project.title}}
+            </td>
+            <td>
+                {{project.owner}}
+            </td>
+            <td>
+                {{project.createdOn |date:'medium'}}
+            </td>
+            <td>
+                <a class="btn btn-sm btn-primary" href="#/projects/{{project.id}}">
+                    <i class="icon-plus-sign icon-white"></i>
+                    Details
+                </a>
+            </td>
+            <td>
+                todo add link
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html ng-app="worxapp">
 <head>
-    <title>WORX 3D preview & share </title>
+    <title>WORX 3D preview & share</title>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css">
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-<div class="navbar navbar-inverse">
-    <div class="container-fluid">
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">WORX 3D preview & share</a>
+            <a class="navbar-brand" href="#">Heisen<span class="fr-blue">C</span><span class="fr-green">A</span><span
+                    class="fr-red">D</span></a>
         </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a class="fr-blue" href="/">Home</a></li>
+            <li><a class="fr-green" href="/#/list.html">Projects</a></li>
+            <li class="fr-red"><a class="fr-red" href="/#/about.html">About</a></li>
+        </ul>
+
     </div>
-</div>
+</nav>
 
 <div class="container" ng-view="">
 
@@ -33,7 +35,6 @@
 <script src="/js/angular-sanitize.js"></script>
 <script src="/js/angular-resource.js"></script>
 <script src='/js/angular-file-uploader.js'></script>
-
 <script src="/scripts/app.js"></script>
 </body>
 </html>

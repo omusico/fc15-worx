@@ -1,11 +1,18 @@
-<h2>Testni upload</h2>
-<div class="alert alert-success" id="alertSuccess" style="display: none">Model successfully uploaded.</div>
-<div class="alert alert-danger" id="alertFail" style="display: none">Error during file upload.</div>
+<h1>Model Upload</h1>
+<div class="alert alert-success col-sm-6" id="alertSuccess" style="display: none">Model successfully uploaded.</div>
+<div class="alert alert-danger col-sm-6" id="alertFail" style="display: none">Error during file upload.</div>
+<div class="col-sm-12">
+    <div class="col-sm-6" id="loadingGif" style="display: none;"><img src="../img/static/loading.gif" alt=""/></div>
+</div>
+<div class="col-sm-12">
 <form class="form-horizontal" role="form" data-ng-submit='uploadFile()' data-ng-controller="UploadFileCtrl">
-    <input type='file' id='uploadFile'><br>
+    <span class="btn btn-default btn-file">
+        <input type='file' id='uploadFile'>
+        <i class="glyphicon glyphicon-open-file"></i> Choose File
+    </span>
     <input class="btn btn-default" type='submit' value='Preview' id="uploadButton">
-    <a href="#" id="refreshPage" ng-click='refreshLocation()'><br/>Not what you were looking for?</a>
 </form>
 
 <img src="#" id="uploadPreview" style="display: none"/>
-
+<!-- <button id="refreshPage" class="btn btn-default col-sm-6" ng-click="refr()" role="button">Not what you were looking for? Try again.</button> -->
+</div>
