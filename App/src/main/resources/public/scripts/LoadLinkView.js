@@ -19,6 +19,7 @@ var _viewer = null;     // the viewer
 // setup for PRODUCTION
 var _viewerEnv = "AutodeskProduction";
 var _myAuthToken = null;
+var modelUrn = null;
 
 function getCurrentPagePathForLink() {
     var pathStr = window.location.pathname;
@@ -47,7 +48,7 @@ function addTrackbackToolbar(parent) {
     var button = new Autodesk.Viewing.UI.Button('quickshare-linkback');
     button.icon.style.backgroundImage = "url(./images/adsk.24x24.png)";
     button.setToolTip("Back to QuickShare page");
-    button.onClick = function(e) {
+    button.onClick = function (e) {
         window.open(getCurrentPagePathForLink(), '_blank');    // The link back button goes to the main web site page where they do the original sharing
     };
 
@@ -84,14 +85,20 @@ function loadDocument(urnStrModel, viewGUID, addEmbedToolbar) {
     }
     var fullUrnStr = "urn:" + urnStrModel;
 
-    Autodesk.Viewing.Document.load(fullUrnStr, function(document) {
+    Autodesk.Viewing.Document.load(fullUrnStr, function (document) {
 
         initializeViewer();
 
         if (viewGUID === null) {   // if they didn't pass in a specific view, try to load a default view
             // get all the 3D and 2D views (but keep in separate arrays so we can differentiate in the UX)
-            var views3D = Autodesk.Viewing.Document.getSubItemsWithProperties(document.getRootItem(), {'type':'geometry', 'role':'3d'}, true);
-            var views2D = Autodesk.Viewing.Document.getSubItemsWithProperties(document.getRootItem(), {'type':'geometry', 'role':'2d'}, true);
+            var views3D = Autodesk.Viewing.Document.getSubItemsWithProperties(document.getRootItem(), {
+                'type': 'geometry',
+                'role': '3d'
+            }, true);
+            var views2D = Autodesk.Viewing.Document.getSubItemsWithProperties(document.getRootItem(), {
+                'type': 'geometry',
+                'role': '2d'
+            }, true);
 
             // load up first 3D view by default
             if (views3D.length > 0) {
@@ -106,7 +113,7 @@ function loadDocument(urnStrModel, viewGUID, addEmbedToolbar) {
         }
         else {
             // retrieve the specific view that they are referencing
-            var initialView = Autodesk.Viewing.Document.getSubItemsWithProperties(document.getRootItem(), {'guid':viewGUID}, true);
+            var initialView = Autodesk.Viewing.Document.getSubItemsWithProperties(document.getRootItem(), {'guid': viewGUID}, true);
             console.assert(initialView.length == 1);
 
             if (initialView.length == 1) {
@@ -123,19 +130,17 @@ function loadDocument(urnStrModel, viewGUID, addEmbedToolbar) {
             addTrackbackToolbar(parent);
         }
 
-    }, function(errorCode, errorMsg) {
+    }, function (errorCode, errorMsg) {
         alert('Load Error: ' + errorMsg);
     });
 }
 
 // for now, just simple diagnostic functions to make sure we know what is happing
-function loadViewSuccessFunc()
-{
+function loadViewSuccessFunc() {
     console.log("Loaded viewer successfully with given asset...");
 }
 
-function loadViewErrorFunc()
-{
+function loadViewErrorFunc() {
     console.log("ERROR: could not load asset into viewer...");
 }
 
@@ -148,10 +153,10 @@ function loadView(document, viewObj) {
 
 // wrap this in a simple function so we can pass it into the Initializer options object
 function getAccessToken() {
-    return _myAuthToken.value();
+    return _myAuthToken;
 }
 
-function setAccessToken(authtoken){
+function setAccessToken(authtoken) {
     _myAuthToken = authtoken;
 }
 
@@ -159,17 +164,19 @@ function setAccessToken(authtoken){
 // get the arguments passed as part of the URL
 function getUrlVars() {
     var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
         vars[key] = value;
     });
     return vars;
 }
 
 // called when HTML page is finished loading, trigger loading of default model into viewer
-function loadLinkedModel(urn, auth,guid) {
+function loadLinkedModel(urn, auth, guid) {
     var urlVars = getUrlVars();
 
     var modelID = btoa(urn);
+    //set it globaly
+    modelUrn = modelID;
     var viewGUID = null;
     var token = auth.replace('"', '').replace('"', '');
 
@@ -178,9 +185,9 @@ function loadLinkedModel(urn, auth,guid) {
     var options = {};
     options.env = _viewerEnv;                // AutodeskProduction, AutodeskStaging, or AutodeskDevelopment (set in global var in this project)
     options.getAccessToken = getToken;
-    options.refreshToken   = getToken;
+    options.refreshToken = getToken;
     var addEmbedToolbar = true;
-    Autodesk.Viewing.Initializer(options, function() {
+    Autodesk.Viewing.Initializer(options, function () {
         loadDocument(modelID, viewGUID, addEmbedToolbar);
     });
 
@@ -188,4 +195,13 @@ function loadLinkedModel(urn, auth,guid) {
         console.log("TOKENN: " + token.replace('"', '').replace('"', ''));
         return token.replace('"', '').replace('"', '');
     }
+}
+
+//Export to img file
+
+function exportToImg() {
+    var img = _viewer.getScreenShot();
+    console.log(img);
+    //$('#exportedImage').attr('href',img);
+    window.location.replace(img);
 }
