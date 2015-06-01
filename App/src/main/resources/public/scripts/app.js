@@ -115,7 +115,8 @@ app.controller('View3DModelCtrl', function ($rootScope, $scope, $http, $routePar
             $scope.authToken = data;
             $scope.urn = $rootScope.model.urn;
             console.log("MODEL URN FROM DB: " + $scope.urn);
-            intialize3D($scope.urn, $scope.authToken);
+            //intialize3D($scope.urn, $scope.authToken);
+            loadLinkedModel($scope.urn, $scope.authToken, null);
             //createViewerToolbarCanvas($("#lmvdbg_toolbar_canvas_div")[0]);
         }).error(function (data, status) {
             console.log('Error ' + data)
