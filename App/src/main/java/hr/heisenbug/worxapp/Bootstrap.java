@@ -84,10 +84,10 @@ public class Bootstrap {
 
     private static void testReference(){
 
-        String masterURN = "urn:adsk.objects:os.object:registerbasebug/vrotor_s_utorom1.sldasm";
-        String child1 = "urn:adsk.objects:os.object:registerbasebug/vzenska_osovina1.sldprt";
-        String child2 = "urn:adsk.objects:os.object:registerbasebug/vsipka_rotora1.sldprt";
-        String child3 = "urn:adsk.objects:os.object:registerbasebug/vmuska_osovina1.sldprt";
+        String masterURN = "urn:adsk.objects:os.object:nedjeljatest/vrotor_s_utorom1.sldasm";
+        String child1 = "urn:adsk.objects:os.object:nedjeljatest/vzenska_osovina1.sldprt";
+        String child2 = "urn:adsk.objects:os.object:nedjeljatest/vsipka_rotora1.sldprt";
+        String child3 = "urn:adsk.objects:os.object:nedjeljatest/vmuska_osovina1.sldprt";
         List<String[]> dependencies = new LinkedList<>();
 
         String[] child11 = new String[2];
@@ -96,13 +96,13 @@ public class Bootstrap {
         dependencies.add(child11);
 
         String[] child22 = new String[2];
-        child11[0] = child2;
-        child11[1] = child2.substring(child2.lastIndexOf("/")+1);
+        child22[0] = child2;
+        child22[1] = child2.substring(child2.lastIndexOf("/")+1);
         dependencies.add(child22);
 
         String[] child33 = new String[2];
-        child11[0] = child3;
-        child11[1] = child3.substring(child3.lastIndexOf("/")+1);
+        child33[0] = child3;
+        child33[1] = child3.substring(child3.lastIndexOf("/")+1);
         dependencies.add(child33);
 
 
