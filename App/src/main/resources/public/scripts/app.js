@@ -13,6 +13,8 @@ var app = angular.module('worxapp', [
 //todo add authentication logic
 app.config(function ($routeProvider) {
     $routeProvider.when('/', {
+        templateUrl: 'views/home.html'
+    }).when('/list.html', {
         templateUrl: 'views/list.html',
         controller: 'ListCtrl'
     }).when('/createBucket', {
@@ -24,8 +26,12 @@ app.config(function ($routeProvider) {
     }).when('/uploadFile/:id', {
         templateUrl: 'views/uploadFile.html',
         controller: 'UploadFileCtrl'
+    }).when('/404.html', {
+        templateUrl: 'views/404.html'
+    }).when('/about.html', {
+        templateUrl: 'views/about.html'
     }).otherwise({
-        redirectTo: '/'
+        redirectTo: '/404.html'
     })
 });
 
@@ -45,6 +51,9 @@ app.controller('ListCtrl', function ($scope, $http) {
         })
     }
 });
+
+app.controller('AboutCtrl', function ($scope, $http) {
+})
 
 app.controller('CreateBucketCtrl', function ($scope, $http, $location) {
     $scope.createBucket = function () {
@@ -94,18 +103,19 @@ app.controller('ViewBucketCtrl', function ($scope, $http, $routeParams) {
     })
 });
 
-app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, $location, FileUploader) {
+app.controller('UploadFileCtrl', function ($rootScope, $scope, $route, $http, $routeParams, $location, FileUploader) {
     //variable for differing upload to local server or autodesk server
     $scope.source = true;
     //parameter is bucket ID
     $scope.fileId = $routeParams.id;
-
-    $scope.refresh = document.getElementById("refreshPage");
-    $scope.refresh.style.display = "none";
+    $rootScope.idProject = $routeParams.id;
+    //$scope.refresh = document.getElementById("refreshPage");
+    //$scope.refresh.style.display = "none";
 
     //success/fail alerts
     var successs = document.getElementById("alertSuccess");
     var fail = document.getElementById("alertFail");
+    var loading = document.getElementById("loadingGif");
     //log the bucket ID
     console.log("Project id: " + $scope.fileId);
 
@@ -124,27 +134,36 @@ app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, 
             //first time is preview
             $scope.source = false;
             document.getElementById("uploadButton").value = "Upload";
-            $scope.refresh.style.display = "block";
+            //$scope.refresh.style.display = "block";
         } else {
             //external autodesk server
             $scope.route = "uploadFileExternal/";
             //second time is upload to autodesk server
             $scope.source = true;
             document.getElementById("uploadButton").value = "Preview";
-            $scope.refresh.style.display = "none";
+            //$scope.refresh.style.display = "none";
         }
 
         $scope.files = document.getElementById('uploadFile').files;
+        loading.style.display = "block";
         FileUploader.post(
             '/api/v1/' + $scope.route + $scope.fileId,
             $scope.files
         ).then(function (data, status, headers, config) {
+
                 //success
-                console.log("Dobar je upload");
+                console.log("Upload OK");
                 console.log(data);
+
+                if($scope.route === 'uploadFile/'){
+                    successs.innerHTML = "Model sucessfully rendered.";
+                } else if($scope.route === 'uploadFileExternal/'){
+                    successs.innerHTML = "Model sucessfully uploaded.";
+                }
 
                 fail.style.display = "none";
                 successs.style.display = "block";
+                loading.style.display = "none";
 
                 var img = document.getElementById("uploadPreview");
                 img.style.visibility = "visible";
@@ -176,14 +195,15 @@ app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, 
 
                 img.style.display = "block";
                 img.src = "/img/generated/" + imageName;
-                /*if($scope.route === "uploadFileExternal/"){
-                 console.log("ID: " +$scope.projectId);
-                 $location.path("/projects/"+$scope.projectId);
-                 }*/
+                if($scope.route == "uploadFileExternal/") {
+                    console.log("ID: " + $rootScope.idProject);
+                    $location.path("/projects/" + $rootScope.idProject);
+                }
             }, function () {
-                console.log("Los je upload !");
+                console.log("Upload ERROR!");
                 successs.style.display = "none";
                 fail.style.display = "block";
+                loading.style.display = "none";
 
                 //if there was an error stay on preview or stay on upload
                 if ($scope.source) {
@@ -199,16 +219,14 @@ app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, 
             console.log("setSource: " + source);
             $scope.source = source;
         }
-        $scope.refreshLocation = function () {
-
+        /*$scope.refreshLocation = function () {
+            console.log("REDIRECT /fileUpload/" + $scope.fileId);
             $location.path("/#/projects/" + $scope.fileId);
 
             //$scope.refresh.href = "/#/uploadFile/"+$scope.fileId;
-            console.log("/fileUpload/" + $scope.fileId);
             //$scope.$route.reload();
 
 
-        }
-
+        }*/
     };
 });
