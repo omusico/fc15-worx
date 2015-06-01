@@ -159,6 +159,16 @@ app.controller('UploadFileCtrl', function ($scope, $route, $http, $routeParams, 
                     imageName = imageName.replace(".SLDASM", "_PreviewPNG.png");
                 } else if (imageName.indexOf(".sldasm") != -1) {
                     imageName = imageName.replace(".sldasm", "_PreviewPNG.png");
+                } else if (imageName.indexOf(".iam") != -1) {
+                    imageName = "no-preview.jpg";
+                } else if (imageName.indexOf(".IAM") != -1) {
+                    imageName = "no-preview.jpg";
+                } else if (imageName.indexOf(".ipt") != -1) {
+                    imageName = "no-preview.jpg";
+                } else if (imageName.indexOf(".ipt") != -1) {
+                    imageName = "no-preview.jpg";
+                } else if (imageName.indexOf(".prt") != -1) {
+                    imageName = imageName.replace(".prt", "_PreviewPNG.jpg");
                 }
 
 

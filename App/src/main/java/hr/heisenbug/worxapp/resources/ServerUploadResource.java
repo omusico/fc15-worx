@@ -2,21 +2,19 @@ package hr.heisenbug.worxapp.resources;
 
 import com.google.gson.*;
 import hr.heisenbug.worxapp.JsonTransformer;
-import hr.heisenbug.worxapp.helpers.FileUploader;
-import hr.heisenbug.worxapp.helpers.RegisterService;
-import hr.heisenbug.worxapp.helpers.StaticData;
+import hr.heisenbug.worxapp.helpers.*;
 import hr.heisenbug.worxapp.models.Bucket;
 import hr.heisenbug.worxapp.models.Model;
 import hr.heisenbug.worxapp.services.BucketService;
 import hr.heisenbug.worxapp.services.ModelService;
 import hr.heisenbug.worxapp.services.ServerUploadService;
-import hr.heisenbug.worxapp.helpers.SolidFileParser;
 import jdk.nashorn.internal.parser.JSONParser;
 import spark.Spark;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static spark.Spark.post;
@@ -27,6 +25,7 @@ import static spark.Spark.post;
 public class ServerUploadResource {
 
     private static final String API_CONTEXT = "/api/v1";
+    private static final String NO_PREVIEW_IMG = "no-preview.jpg";
 
     private final ServerUploadService serverUploadService;
 
@@ -41,22 +40,47 @@ public class ServerUploadResource {
 
             serverUploadService.uploadFile(request.params(":id"), request);
             //parser
-            SolidFileParser sfp = new SolidFileParser(serverUploadService.getFilePath());
-            List<String> modelDependencies = sfp.parseSolidFile();
-            System.out.println("Model dependencies: " + modelDependencies);
+            //parser
+            List<String> modelDependencies = new LinkedList<String>();
+            String previewImage = "";
+            String fileName = "";
 
+            if (serverUploadService.getFilePath().toLowerCase().contains(".sldprt")
+                    || serverUploadService.getFilePath().toLowerCase().contains(".sldasm")) {
 
-            //preview image path
-            String previewImagePath = sfp.getFinalPreviewPath();
-            System.out.println("Image preview: " + previewImagePath);
+                SolidFileParser sfp = new SolidFileParser(serverUploadService.getFilePath());
+                modelDependencies = sfp.parseSolidFile();
+                previewImage = sfp.getFinalPreviewPath();
+                fileName = sfp.getFileName();//file path actually
 
-            String previewUrl = "http://localhost:8080/img/generated/" + previewImagePath.substring(previewImagePath.lastIndexOf("/") + 1);
+            } else if (serverUploadService.getFilePath().toLowerCase().contains(".iam")
+                    || serverUploadService.getFilePath().toLowerCase().contains(".ipt")) {
+
+                InventorFileParser sfp = new InventorFileParser(serverUploadService.getFilePath());
+                modelDependencies = sfp.parseSolidFile();
+                previewImage = sfp.getFinalPreviewPath();
+                fileName = sfp.getFilePath();
+            } else if (serverUploadService.getFilePath().toLowerCase().contains(".prt")) {
+
+                NxFileParser sfp = new NxFileParser(serverUploadService.getFilePath());
+                modelDependencies = sfp.parseSolidFile();
+                previewImage = sfp.getFinalPreviewPath();
+                fileName = sfp.getFileName(); //file path actually
+            }
+
+            if (previewImage.equals("")) {
+
+                previewImage = "/img/generated/" + NO_PREVIEW_IMG;
+                System.out.println("Image is none: " + previewImage);
+            }
+
+            String previewUrl = "/img/generated/" + previewImage.substring(previewImage.lastIndexOf("/") + 1);
             System.out.println(
                     previewUrl
             );
 
             //response.redirect(previewUrl);
-            response.header("previewUrl", "/img/generated/" + previewImagePath.substring(previewImagePath.lastIndexOf("/") + 1));
+            response.header("previewUrl", "/img/generated/" + previewImage.substring(previewImage.lastIndexOf("/") + 1));
 
             /* TODO: connect bucket with child models
             BucketService bs = new BucketService(StaticData.getDb());
@@ -76,16 +100,43 @@ public class ServerUploadResource {
             System.out.println("\nExternal upload!\n");
 
             serverUploadService.uploadFile(request.params(":id"), request);
+
             //parser
-            SolidFileParser sfp = new SolidFileParser(serverUploadService.getFilePath());
-            List<String> modelDependencies = sfp.parseSolidFile();
+            List<String> modelDependencies = new LinkedList<String>();
+            String previewImage = "";
+            String fileName = "";
+
+            if (serverUploadService.getFilePath().toLowerCase().contains(".sldprt")
+                    || serverUploadService.getFilePath().toLowerCase().contains(".sldasm")) {
+
+                SolidFileParser sfp = new SolidFileParser(serverUploadService.getFilePath());
+                modelDependencies = sfp.parseSolidFile();
+                previewImage = sfp.getFinalPreviewPath();
+                fileName = sfp.getFileName();
+
+            } else if (serverUploadService.getFilePath().toLowerCase().contains(".iam")
+                    || serverUploadService.getFilePath().toLowerCase().contains(".ipt")) {
+
+                InventorFileParser sfp = new InventorFileParser(serverUploadService.getFilePath());
+                modelDependencies = sfp.parseSolidFile();
+                previewImage = sfp.getFinalPreviewPath();
+                fileName = sfp.getFilePath();
+            } else if (serverUploadService.getFilePath().toLowerCase().contains(".prt")) {
+
+                NxFileParser sfp = new NxFileParser(serverUploadService.getFilePath());
+                modelDependencies = sfp.parseSolidFile();
+                previewImage = sfp.getFinalPreviewPath();
+                fileName = sfp.getFileName(); //file path actually
+            }
+
+            if (previewImage.equals("")) {
+                previewImage = "/img/generated/static/" + NO_PREVIEW_IMG;
+            }
+
             System.out.println("Model dependencies: " + modelDependencies);
 
-            //select svih modela iz bucketa - :id
-            //da li se
-
             //preview image path
-            String previewImagePath = sfp.getFinalPreviewPath();
+            String previewImagePath = previewImage;
             System.out.println("Image preview: " + previewImagePath);
 
             String previewUrl = "http://localhost:8080/img/generated/" + previewImagePath.substring(previewImagePath.lastIndexOf("/") + 1);
@@ -104,22 +155,22 @@ public class ServerUploadResource {
             String resp = "";
 
             //remove spaces and non alphanumeric chars
-            String alternateKey = sfp.getFileName();
+            String alternateKey = fileName;
             //parse name from filepath
             alternateKey = alternateKey.substring(alternateKey.lastIndexOf("/") + 1);
             alternateKey = alternateKey.toLowerCase();
             alternateKey = alternateKey.replace(" ", "_");
             alternateKey = alternateKey.replaceAll("[^-_.a-z0-9]", "");
             //get path where file is located
-            String oldPath = sfp.getFileName();
+            String oldPath = fileName;
             oldPath = oldPath.substring(0, oldPath.lastIndexOf("/") + 1);
             System.out.println(oldPath);
 
             //files for rename
-            File modelOldName = new File(sfp.getFileName());
+            File modelOldName = new File(fileName);
             File modelNewName = new File(oldPath + alternateKey);
 
-            System.out.println("Novo ime modela: " + modelNewName.getPath() + "\nStaro ime modela: " + sfp.getFileName());
+            System.out.println("Novo ime modela: " + modelNewName.getPath() + "\nStaro ime modela: " + fileName);
             //renamne them
             modelOldName.renameTo(modelNewName);
 
@@ -178,6 +229,12 @@ public class ServerUploadResource {
                 fileType = "sldasm";
             } else if (extension.toLowerCase().equals("sldprt")) {
                 fileType = "sldprt";
+            } else if (extension.toLowerCase().equals("iam")) {
+                fileType = "iam";
+            } else if (extension.toLowerCase().equals("ipt")) {
+                fileType = "ipt";
+            } else if (extension.toLowerCase().equals("prt")) {
+                fileType = "prt";
             }
             System.out.println("fileType " + extension.toLowerCase());
             System.out.println("fileType " + fileType);
