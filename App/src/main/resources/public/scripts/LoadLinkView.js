@@ -52,10 +52,10 @@ function addTrackbackToolbar(parent) {
         window.open(getCurrentPagePathForLink(), '_blank');    // The link back button goes to the main web site page where they do the original sharing
     };
 
-    controlGroup.addControl(button);
-    toolbar.addControl(controlGroup);
+   // controlGroup.addControl(button);
+    //toolbar.addControl(controlGroup);
 
-    div.appendChild(toolbar.container);
+    //div.appendChild(toolbar.container);
 }
 
 
@@ -202,6 +202,6 @@ function loadLinkedModel(urn, auth, guid) {
 function exportToImg() {
     var img = _viewer.getScreenShot();
     console.log(img);
-    //$('#exportedImage').attr('href',img);
-    window.location.replace(img);
+    $('#imageDownloader').attr('href',img);
+    //window.location.replace(img);
 }
