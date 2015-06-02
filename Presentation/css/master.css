@@ -1,3 +1,78 @@
+body{
+    background-image: url("../img/robot_bg_5.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.semi-light {
+    font-weight: 300 !important;
+}
+
+.fr-orange {
+    color: #3291E0!important;
+}
+
+.fr-orange-strong {
+    color: #3291E0 !important;
+    font-weight: 300 !important;
+}
+
+.img-pure {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.img-pure-margin{
+ margin: 30px;
+}
+
+hr.seier {
+    background-color: #3291E0;
+    border-color: #3291E0;
+    color: #3291E0;
+}
+
+ul {
+    list-style: none !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+h1 {
+    color: #3291E0;
+}
+
+.fr-blue {
+    color: #3291E0 !important;
+}
+
+.fr-green {
+    color: #87b340 !important;
+}
+
+.fr-red {
+    color: #a93944 !important;
+}
+
+.bg-grey {
+    background-color: #eee;
+    padding: 20px 40px;
+    opacity: 0.9;
+}
+
+.title {
+    font-size: 6em;
+    padding: 1.5em 0 1.5em 0;
+    font-weight: 100;
+}
+
+.project-title {
+    padding-bottom: 20px;
+}
+
+/*
 html,
 body {
     height: 100%;
@@ -143,3 +218,4 @@ table {
 .model-preview-img{
     max-width: 200px !important;
 }
+*/
