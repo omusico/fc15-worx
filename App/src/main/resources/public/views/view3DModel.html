@@ -1,8 +1,19 @@
-<h1 class="project-title">3D Preview: {{model.title}}</h1>
+<div class="col-sm-12" xmlns="http://www.w3.org/1999/html">
+    <h1 class="project-title">3D Preview: {{model.title}}</h1>
+    <br><br>
+    <a href="#" id="imageDownloader" download>
+        <button class="btn btn-default" onclick="exportToImg()">
+            <span class="glyphicon glyphicon-download-alt"></span>
+            Export to image
+        </button>
+    </a>
+</div>
 
 
-<button class="btn btn-default" onclick="exportToImg()" >Export to image</button>
+<div class="col-sm-12">
 
-<div class="col-md-8" id="viewer" style="height: 600px;">
-    <!--<div id="lmvdbg_toolbar_canvas_div" style="position: relative; top: 10px; left: 0px; z-index: 200;"></div>-->
+
+    <div class="" id="viewer" style="height: 600px;">
+        <!--<div id="lmvdbg_toolbar_canvas_div" style="position: relative; top: 10px; left: 0px; z-index: 200;"></div>-->
+    </div>
 </div>
