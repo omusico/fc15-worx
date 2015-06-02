@@ -68,6 +68,18 @@ public class ModelService {
             DBObject dbObject = dbObjects.next();
             models.add(new Model((BasicDBObject) dbObject));
         }
+        queryObject.append("modelType", "iam");
+        dbObjects = collection.find(queryObject);
+        while (dbObjects.hasNext()) {
+            DBObject dbObject = dbObjects.next();
+            models.add(new Model((BasicDBObject) dbObject));
+        }
+        queryObject.append("modelType", "prt");
+        dbObjects = collection.find(queryObject);
+        while (dbObjects.hasNext()) {
+            DBObject dbObject = dbObjects.next();
+            models.add(new Model((BasicDBObject) dbObject));
+        }
         System.out.println("findAllChildren() of " + bucketId + " = " + models);
         return models;
     }

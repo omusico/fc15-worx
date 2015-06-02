@@ -59,7 +59,7 @@ public class Bootstrap {
         new ModelResource(new ModelService(mongo));
         new StaticDataResource();
 
-        testReference();
+        //testReference();
     }
 
     //todo refactor
